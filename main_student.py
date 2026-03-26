@@ -1,17 +1,3 @@
-# ============================================================
-#  Student Progress Monitoring Dashboard
-#  Built with: Streamlit + Plotly + Pandas
-#
-#  Setup:
-#    pip install streamlit plotly pandas numpy
-#
-#  Run:
-#    streamlit run student_progress_streamlit.py
-#
-#  Note: Place student_progress.csv in the same folder,
-#        OR the app will auto-generate the dataset.
-# ============================================================
-
 import streamlit as st
 import plotly.express as px
 import plotly.graph_objects as go
@@ -19,7 +5,6 @@ import pandas as pd
 import numpy as np
 import os
 
-# ── Page config ──────────────────────────────────────────────
 st.set_page_config(
     page_title="Student Progress Monitor",
     page_icon="🎓",
@@ -30,14 +15,11 @@ st.title("🎓 Student Progress Monitoring System")
 st.caption("K-Means Clustering · C Programming Course · 200 Students")
 st.divider()
 
-
-# ── 1. Load or generate data ─────────────────────────────────
 @st.cache_data
 def load_data():
     if os.path.exists("student_progress.csv"):
         return pd.read_csv("student_progress.csv")
 
-    # Auto-generate if CSV not found
     np.random.seed(42)
     cluster_profiles = {
         0: {"label": "High Performer",  "quiz": (82, 8),  "assign": (88, 7),  "midterm": (85, 7),  "final": (87, 7),  "attendance": (92, 5)},
@@ -82,8 +64,6 @@ GRADE_COLORS = {
     "C": "#BA7517", "D": "#EF9F27", "F": "#E24B4A",
 }
 
-
-# ── 2. Sidebar filters ───────────────────────────────────────
 st.sidebar.header("Filters")
 
 clusters = st.sidebar.multiselect(
@@ -106,8 +86,6 @@ st.sidebar.markdown("**Scoring weights**")
 st.sidebar.markdown("Quiz 15% · Assignment 25%")
 st.sidebar.markdown("Midterm 25% · Final 30% · Attendance 5%")
 
-
-# ── 3. Apply filters ─────────────────────────────────────────
 dff = df[
     (df["Cluster_Label"].isin(clusters)) &
     (df["Grade"].isin(grades)) &
@@ -119,8 +97,6 @@ if dff.empty:
     st.warning("No students match the selected filters.")
     st.stop()
 
-
-# ── 4. KPI Cards ─────────────────────────────────────────────
 c1, c2, c3, c4, c5 = st.columns(5)
 
 c1.metric("Total Students",       f"{len(dff)}")
@@ -133,8 +109,6 @@ c5.metric("At Risk (Grade F)",    f"{(dff['Grade'] == 'F').sum()} students",
 
 st.divider()
 
-
-# ── 5. Row 1: Cluster donut + Avg scores by cluster ──────────
 col_a, col_b = st.columns(2)
 
 with col_a:
@@ -166,8 +140,6 @@ with col_b:
                                  categoryarray=["Quiz","Assignment","Midterm","Final","Attendance Pct"]))
     st.plotly_chart(fig, use_container_width=True)
 
-
-# ── 6. Row 2: Scatter + Grade breakdown ──────────────────────
 col_c, col_d = st.columns(2)
 
 with col_c:
@@ -196,8 +168,6 @@ with col_d:
     fig.update_layout(margin=dict(l=0, r=0, t=10, b=0), legend_title_text="Grade")
     st.plotly_chart(fig, use_container_width=True)
 
-
-# ── 7. Row 3: Score distribution box plot ────────────────────
 st.subheader("Score distribution across components")
 box_data = dff.melt(
     id_vars="Cluster_Label",
@@ -214,8 +184,6 @@ fig = px.box(
 fig.update_layout(margin=dict(l=0, r=0, t=10, b=0), legend_title_text="")
 st.plotly_chart(fig, use_container_width=True)
 
-
-# ── 8. Student detail table ───────────────────────────────────
 st.divider()
 st.subheader("Student detail")
 st.caption(f"{len(dff)} students shown · sorted by Total Score")
