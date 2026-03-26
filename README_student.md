@@ -38,17 +38,6 @@ An interactive dashboard for monitoring and analysing student performance using 
 - Score distribution box plot across all components
 - Student detail table with colour-coded score gradients
 
-## Run Locally
-
-```bash
-pip install -r requirements.txt
-streamlit run student_progress_streamlit.py
-```
-
-## Live Demo
-
-Deployed on Streamlit Cloud — [View Dashboard](#)
-
 ## Tech Stack
 
 Python · Streamlit · Plotly · Pandas · NumPy
