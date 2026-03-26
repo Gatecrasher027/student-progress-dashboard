@@ -11,7 +11,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🎓 Student Progress Monitoring System")
+st.title("Student Progress Monitoring System")
 st.caption("K-Means Clustering · C Programming Course · 200 Students")
 st.divider()
 
